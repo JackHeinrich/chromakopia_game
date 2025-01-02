@@ -1,0 +1,39 @@
+[gd_scene load_steps=8 format=3 uid="uid://1e2u2toc3v3u"]
+
+[ext_resource type="Texture2D" uid="uid://bfomsyorjdyfs" path="res://gameplay_plane/indicator.png" id="1_g14r5"]
+[ext_resource type="Script" path="res://gameplay_plane/indicator_particle.gd" id="2_rokff"]
+
+[sub_resource type="Curve" id="Curve_vkv84"]
+min_value = -2.5
+max_value = 2.5
+_data = [Vector2(0, -2.5), 0.0, 0.0, 0, 0, Vector2(1, 2.5), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_rt3fl"]
+curve = SubResource("Curve_vkv84")
+
+[sub_resource type="Curve" id="Curve_ft13b"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.122754, 1), 0.0, 0.0, 0, 0, Vector2(0.889222, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_c15tq"]
+curve = SubResource("Curve_ft13b")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_3t4w3"]
+particle_flag_disable_z = true
+velocity_pivot = Vector3(1, 0, 0)
+initial_velocity_min = 45.0
+initial_velocity_max = 45.0
+angular_velocity_min = -15.0
+angular_velocity_max = 15.0
+angular_velocity_curve = SubResource("CurveTexture_rt3fl")
+gravity = Vector3(0, -98, 0)
+scale_curve = SubResource("CurveTexture_c15tq")
+
+[node name="IndicatorParticle" type="GPUParticles2D"]
+emitting = false
+amount = 1
+process_material = SubResource("ParticleProcessMaterial_3t4w3")
+texture = ExtResource("1_g14r5")
+one_shot = true
+script = ExtResource("2_rokff")

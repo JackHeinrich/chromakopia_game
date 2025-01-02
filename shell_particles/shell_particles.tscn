@@ -1,0 +1,42 @@
+[gd_scene load_steps=8 format=3 uid="uid://cldanq4aj4qx1"]
+
+[ext_resource type="Script" path="res://shell_particles/shell_particles.gd" id="1_7xixh"]
+[ext_resource type="Texture2D" uid="uid://d2w6c35vnd78t" path="res://shell_particles/shell_particles.png" id="1_dfnq2"]
+
+[sub_resource type="Curve" id="Curve_ywkvt"]
+min_value = -360.0
+max_value = 360.0
+_data = [Vector2(0, -360), 0.0, 0.0, 0, 0, Vector2(1, 360), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ny5gi"]
+curve = SubResource("Curve_ywkvt")
+
+[sub_resource type="Curve" id="Curve_0strb"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.140719, 1), 0.0, 0.0, 0, 0, Vector2(0.841317, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_lh7o1"]
+curve = SubResource("Curve_0strb")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1mtcj"]
+particle_flag_disable_z = true
+angle_max = 1.0
+angle_curve = SubResource("CurveTexture_ny5gi")
+direction = Vector3(-2, -3, 0)
+spread = 0.0
+initial_velocity_min = 30.0
+initial_velocity_max = 30.0
+gravity = Vector3(0, 98, 0)
+scale_max = 1.5
+scale_curve = SubResource("CurveTexture_lh7o1")
+
+[node name="shell_particles" type="GPUParticles2D"]
+emitting = false
+amount = 1
+process_material = SubResource("ParticleProcessMaterial_1mtcj")
+texture = ExtResource("1_dfnq2")
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+script = ExtResource("1_7xixh")

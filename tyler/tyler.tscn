@@ -1,0 +1,136 @@
+[gd_scene load_steps=20 format=3 uid="uid://c2p7fkfc1en7q"]
+
+[ext_resource type="Texture2D" uid="uid://bjruf62ieateg" path="res://tyler/tyler_gun.png" id="1_5ilvx"]
+[ext_resource type="Texture2D" uid="uid://cjamktft4ddya" path="res://tyler/tyler.png" id="1_byvax"]
+[ext_resource type="Script" path="res://state_machine/state_machine.gd" id="2_2xncr"]
+[ext_resource type="Script" path="res://tyler/states/instructing_state.gd" id="3_42c3t"]
+[ext_resource type="Script" path="res://tyler/walking_to_state.gd" id="4_12ge8"]
+[ext_resource type="Script" path="res://tyler/grab_state.gd" id="5_nfpoc"]
+[ext_resource type="Script" path="res://tyler/states/gunning_state.gd" id="7_rqek3"]
+[ext_resource type="AudioStream" uid="uid://c6j1303r2ga5k" path="res://gun/cock1.wav" id="8_lhxic"]
+[ext_resource type="Script" path="res://tyler/states/place_state.gd" id="8_wr4i0"]
+[ext_resource type="Script" path="res://tyler/states/second_walking_state.gd" id="9_7kjfa"]
+[ext_resource type="AudioStream" uid="uid://dx3ef0rt2w6ng" path="res://gun/cock2.wav" id="9_b0rkk"]
+[ext_resource type="Script" path="res://tyler/states/third_walking_state.gd" id="10_o3q4m"]
+[ext_resource type="Script" path="res://tyler/fourth_walking_state.gd" id="11_1vy7n"]
+[ext_resource type="Script" path="res://tyler/fifth_walking_state.gd" id="12_exut2"]
+[ext_resource type="Script" path="res://tyler/smack_state.gd" id="13_kyr1e"]
+[ext_resource type="Script" path="res://tyler/walking_state_six.gd" id="14_lfkty"]
+[ext_resource type="Script" path="res://tyler/final_state.gd" id="15_odjt2"]
+[ext_resource type="AudioStream" uid="uid://bldk626e4lbvt" path="res://tyler/slam.wav" id="16_uq4yc"]
+[ext_resource type="AudioStream" uid="uid://db57batxdmn61" path="res://gun/swipe.wav" id="17_fp68g"]
+
+[node name="tyler" type="Node2D"]
+metadata/_edit_group_ = true
+
+[node name="gun_holder_holder" type="Node2D" parent="."]
+
+[node name="gun_holder" type="Node2D" parent="gun_holder_holder"]
+visible = false
+rotation = -0.261799
+
+[node name="gun_sprite" type="Sprite2D" parent="gun_holder_holder/gun_holder"]
+position = Vector2(0, -17)
+texture = ExtResource("1_5ilvx")
+
+[node name="muzzle" type="Marker2D" parent="gun_holder_holder/gun_holder"]
+position = Vector2(-0.028, -11.398)
+
+[node name="tyler_sprite" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0, -12)
+texture = ExtResource("1_byvax")
+hframes = 21
+
+[node name="state_machine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("2_2xncr")
+initial_state = NodePath("instructing_state")
+
+[node name="instructing_state" type="Node" parent="state_machine" node_paths=PackedStringArray("sprite", "tyler")]
+script = ExtResource("3_42c3t")
+sprite = NodePath("../../tyler_sprite")
+tyler = NodePath("../..")
+
+[node name="first_walking_state" type="Node" parent="state_machine" node_paths=PackedStringArray("sprite", "tyler")]
+script = ExtResource("4_12ge8")
+sprite = NodePath("../../tyler_sprite")
+tyler = NodePath("../..")
+
+[node name="grab_state" type="Node" parent="state_machine" node_paths=PackedStringArray("sprite", "tyler", "gun_holder")]
+script = ExtResource("5_nfpoc")
+sprite = NodePath("../../tyler_sprite")
+tyler = NodePath("../..")
+gun_holder = NodePath("../../gun_holder_holder/gun_holder")
+
+[node name="gunning_state" type="Node" parent="state_machine" node_paths=PackedStringArray("tyler", "gun_holder", "gun_holder_holder", "sprite", "muzzle", "pump_1", "pump_2", "timer")]
+script = ExtResource("7_rqek3")
+tyler = NodePath("../..")
+gun_holder = NodePath("../../gun_holder_holder/gun_holder")
+gun_holder_holder = NodePath("../../gun_holder_holder")
+sprite = NodePath("../../tyler_sprite")
+muzzle = NodePath("../../gun_holder_holder/gun_holder/muzzle")
+pump_1 = NodePath("../../cock_1")
+pump_2 = NodePath("../../cock_2")
+timer = NodePath("../../pump_timer")
+teleport_spot = Vector2(104, -256)
+
+[node name="place_state" type="Node" parent="state_machine" node_paths=PackedStringArray("sprite", "gun_sprite")]
+script = ExtResource("8_wr4i0")
+sprite = NodePath("../../tyler_sprite")
+gun_sprite = NodePath("../../gun_holder_holder/gun_holder/gun_sprite")
+
+[node name="second_walking_state" type="Node" parent="state_machine" node_paths=PackedStringArray("tyler", "sprite")]
+script = ExtResource("9_7kjfa")
+tyler = NodePath("../..")
+sprite = NodePath("../../tyler_sprite")
+
+[node name="third_walking_state" type="Node" parent="state_machine" node_paths=PackedStringArray("sprite", "tyler")]
+script = ExtResource("10_o3q4m")
+sprite = NodePath("../../tyler_sprite")
+tyler = NodePath("../..")
+
+[node name="fourth_walking_state" type="Node" parent="state_machine" node_paths=PackedStringArray("sprite", "tyler")]
+script = ExtResource("11_1vy7n")
+sprite = NodePath("../../tyler_sprite")
+tyler = NodePath("../..")
+
+[node name="fifth_walking_state" type="Node" parent="state_machine" node_paths=PackedStringArray("sprite", "tyler")]
+script = ExtResource("12_exut2")
+sprite = NodePath("../../tyler_sprite")
+tyler = NodePath("../..")
+
+[node name="smack_state" type="Node" parent="state_machine" node_paths=PackedStringArray("sprite", "slammer", "fwhip", "tyler")]
+script = ExtResource("13_kyr1e")
+sprite = NodePath("../../tyler_sprite")
+slammer = NodePath("../../slammer")
+fwhip = NodePath("../../fwhip")
+tyler = NodePath("../..")
+
+[node name="walking_state_six" type="Node" parent="state_machine" node_paths=PackedStringArray("sprite", "tyler")]
+script = ExtResource("14_lfkty")
+sprite = NodePath("../../tyler_sprite")
+tyler = NodePath("../..")
+exit_tank_pos = Vector2(104, -492)
+
+[node name="final_state" type="Node" parent="state_machine" node_paths=PackedStringArray("sprite", "tyler")]
+script = ExtResource("15_odjt2")
+sprite = NodePath("../../tyler_sprite")
+tyler = NodePath("../..")
+
+[node name="cock_1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_lhxic")
+volume_db = -15.0
+
+[node name="cock_2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_b0rkk")
+volume_db = -15.0
+
+[node name="pump_timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="slammer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("16_uq4yc")
+
+[node name="fwhip" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("17_fp68g")
+pitch_scale = 0.75

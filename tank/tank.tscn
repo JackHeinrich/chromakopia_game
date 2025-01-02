@@ -1,0 +1,213 @@
+[gd_scene load_steps=21 format=3 uid="uid://ru62i473ssbo"]
+
+[ext_resource type="Texture2D" uid="uid://cn6pxrgk5usvu" path="res://tank/tank_top.png" id="2_1swu4"]
+[ext_resource type="Texture2D" uid="uid://bejvy3xruj36d" path="res://tank/tank_bottom.png" id="2_qgg16"]
+[ext_resource type="PackedScene" uid="uid://dumn785ualf4a" path="res://state_machine/state_machine.tscn" id="3_0146n"]
+[ext_resource type="Script" path="res://tank/initial_tank_state.gd" id="4_8xdli"]
+[ext_resource type="AudioStream" uid="uid://bexcttsereq76" path="res://tank/close1.wav" id="5_0py0w"]
+[ext_resource type="Script" path="res://tank/idle_state.gd" id="5_80tkr"]
+[ext_resource type="AudioStream" uid="uid://rhi70ea0wnvl" path="res://tank/close2.wav" id="6_161iu"]
+[ext_resource type="Script" path="res://tank/firing_state.gd" id="6_aimn1"]
+[ext_resource type="Script" path="res://tank/leaving_state.gd" id="7_7pje0"]
+[ext_resource type="AudioStream" uid="uid://clcf2v0l7gogy" path="res://tank/start.wav" id="7_lv45j"]
+[ext_resource type="Texture2D" uid="uid://nsshxhh6ulwe" path="res://tank/smoke_particles.png" id="7_qbeh2"]
+[ext_resource type="AudioStream" uid="uid://b2m428c8ir754" path="res://tank/pup.wav" id="8_q1qsa"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_po3a1"]
+particles_animation = true
+particles_anim_h_frames = 4
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Curve" id="Curve_boikl"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.0788177, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_lpdj6"]
+curve = SubResource("Curve_boikl")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_3ailk"]
+particle_flag_disable_z = true
+angle_min = -720.0
+angle_max = 720.0
+spread = 10.0
+initial_velocity_min = 20.0
+initial_velocity_max = 20.0
+angular_velocity_min = -45.0
+angular_velocity_max = 45.0
+gravity = Vector3(0, -5, 0)
+scale_min = 0.5
+scale_max = 0.5
+scale_curve = SubResource("CurveTexture_lpdj6")
+anim_offset_max = 1.0
+
+[sub_resource type="Animation" id="Animation_n2rkp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../top:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 5)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_7jfj8"]
+resource_name = "idle"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(0.5, 2, 0.5, 2),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.025, 1), Vector2(1, 1), Vector2(0.975, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../top:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 5)]
+}
+
+[sub_resource type="Animation" id="Animation_a635a"]
+resource_name = "rumble"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../top:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0),
+"update": 0,
+"values": [Vector2(0, 5), Vector2(1, 5), Vector2(1, 6), Vector2(0, 6), Vector2(0, 5), Vector2(1, 5), Vector2(1, 6), Vector2(0, 6)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(0.5, 2, 0.5, 2),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.025, 1), Vector2(1, 1), Vector2(0.975, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kx6to"]
+_data = {
+"RESET": SubResource("Animation_n2rkp"),
+"idle": SubResource("Animation_7jfj8"),
+"rumble": SubResource("Animation_a635a")
+}
+
+[node name="tank" type="Node2D"]
+
+[node name="tank" type="Sprite2D" parent="."]
+texture = ExtResource("2_qgg16")
+hframes = 6
+
+[node name="top" type="Sprite2D" parent="."]
+position = Vector2(0, 5)
+texture = ExtResource("2_1swu4")
+offset = Vector2(0, -5)
+
+[node name="muzzle" type="Marker2D" parent="top"]
+position = Vector2(0.5, -29)
+
+[node name="state_machine" parent="." node_paths=PackedStringArray("initial_state") instance=ExtResource("3_0146n")]
+initial_state = NodePath("initial_tank_state")
+
+[node name="initial_tank_state" type="Node" parent="state_machine" node_paths=PackedStringArray("sprite", "close1", "close2", "smoke_particles", "animator", "start", "tank", "pup")]
+script = ExtResource("4_8xdli")
+sprite = NodePath("../../tank")
+close1 = NodePath("../../clunk1")
+close2 = NodePath("../../clunk2")
+smoke_particles = NodePath("../../smoke_particles")
+animator = NodePath("../../AnimationPlayer")
+start = NodePath("../../start")
+tank = NodePath("../..")
+pup = NodePath("../../pup")
+
+[node name="idle_state" type="Node" parent="state_machine" node_paths=PackedStringArray("anim_player")]
+script = ExtResource("5_80tkr")
+anim_player = NodePath("../../AnimationPlayer")
+
+[node name="firing_state" type="Node" parent="state_machine" node_paths=PackedStringArray("tank", "top", "muzzle", "timer")]
+script = ExtResource("6_aimn1")
+tank = NodePath("../..")
+top = NodePath("../../top")
+muzzle = NodePath("../../top/muzzle")
+timer = NodePath("../../firerate_timer")
+
+[node name="leaving_state" type="Node" parent="state_machine" node_paths=PackedStringArray("top", "animation_player", "smoke_particles", "bottom", "clunk1", "clunk2", "pup")]
+script = ExtResource("7_7pje0")
+top = NodePath("../../top")
+animation_player = NodePath("../../AnimationPlayer")
+smoke_particles = NodePath("../../smoke_particles")
+bottom = NodePath("../../tank")
+clunk1 = NodePath("../../clunk1")
+clunk2 = NodePath("../../clunk2")
+pup = NodePath("../../pup")
+
+[node name="clunk1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_0py0w")
+
+[node name="clunk2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_161iu")
+
+[node name="start" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_lv45j")
+
+[node name="pup" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_q1qsa")
+volume_db = -5.0
+
+[node name="smoke_particles" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_po3a1")
+position = Vector2(0, 24)
+emitting = false
+amount = 10
+process_material = SubResource("ParticleProcessMaterial_3ailk")
+texture = ExtResource("7_qbeh2")
+lifetime = 10.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../tank")
+libraries = {
+"": SubResource("AnimationLibrary_kx6to")
+}
+
+[node name="firerate_timer" type="Timer" parent="."]

@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://c0dotm7sbj8eb"]
+
+[ext_resource type="AudioStream" uid="uid://b8tp5226eanis" path="res://song/8bittopia.wav" id="1_iq8ch"]
+[ext_resource type="Script" path="res://global_beat_handler/global_beat_handler.gd" id="1_pry82"]
+[ext_resource type="AudioStream" uid="uid://c80bbye5dx55l" path="res://song/metronome.mp3" id="3_2do3c"]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" node_paths=PackedStringArray("metronome_player", "start_timer")]
+stream = ExtResource("1_iq8ch")
+volume_db = -10.0
+script = ExtResource("1_pry82")
+metronome_player = NodePath("metronome")
+start_timer = NodePath("Timer")
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="metronome" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_2do3c")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

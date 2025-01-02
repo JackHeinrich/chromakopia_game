@@ -1,0 +1,45 @@
+[gd_scene load_steps=9 format=3 uid="uid://btnwjbhihsjhm"]
+
+[ext_resource type="PackedScene" uid="uid://dnmuwiutyankn" path="res://auto_play_particles/auto_play_particles.tscn" id="1_3p3ma"]
+
+[sub_resource type="Curve" id="Curve_rmc3v"]
+min_value = -360.0
+max_value = 360.0
+_data = [Vector2(0, 1.27359), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_e3qj6"]
+curve = SubResource("Curve_rmc3v")
+
+[sub_resource type="Gradient" id="Gradient_lf0le"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.509804)
+colors = PackedColorArray(0.376471, 0.376471, 0.376471, 1, 0.623529, 0.623529, 0.623529, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_bdmeh"]
+gradient = SubResource("Gradient_lf0le")
+
+[sub_resource type="Curve" id="Curve_loagd"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.0718563, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_j4273"]
+curve = SubResource("Curve_loagd")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_mwtl1"]
+particle_flag_disable_z = true
+angle_min = -720.0
+angle_max = 720.0
+angle_curve = SubResource("CurveTexture_e3qj6")
+direction = Vector3(0.866, -0.75, 0)
+spread = 30.0
+initial_velocity_min = 5.0
+initial_velocity_max = 10.0
+gravity = Vector3(0, 0, 0)
+scale_max = 4.0
+scale_curve = SubResource("CurveTexture_j4273")
+color_initial_ramp = SubResource("GradientTexture1D_bdmeh")
+
+[node name="AutoPlayParticles" instance=ExtResource("1_3p3ma")]
+process_material = SubResource("ParticleProcessMaterial_mwtl1")
+explosiveness = 1.0

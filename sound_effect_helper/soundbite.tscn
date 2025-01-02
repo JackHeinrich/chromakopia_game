@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://xqtho05aytgt"]
+
+[ext_resource type="Script" path="res://sound_effect_helper/soundbite.gd" id="1_trdxo"]
+
+[node name="Soundbite" type="AudioStreamPlayer"]
+script = ExtResource("1_trdxo")

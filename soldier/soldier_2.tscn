@@ -1,0 +1,35 @@
+[gd_scene load_steps=7 format=3 uid="uid://bfmhp7kv2k2ts"]
+
+[ext_resource type="Script" path="res://soldier/soldier.gd" id="1_1t1yf"]
+[ext_resource type="Texture2D" uid="uid://pdvujr5tlwer" path="res://soldier/soldier.png" id="2_6s7p0"]
+[ext_resource type="PackedScene" uid="uid://dumn785ualf4a" path="res://state_machine/state_machine.tscn" id="3_vg8h6"]
+[ext_resource type="Script" path="res://soldier/states/soldier_state.gd" id="4_loccl"]
+[ext_resource type="PackedScene" uid="uid://btnwjbhihsjhm" path="res://soldier/soldier_footstep_particles.tscn" id="5_h540h"]
+[ext_resource type="Script" path="res://soldier/states/standing_state.gd" id="6_tyjlu"]
+
+[node name="Soldier_2" type="Node2D" node_paths=PackedStringArray("walking_state")]
+script = ExtResource("1_1t1yf")
+walking_state = NodePath("state_machine/walking_state")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0.5, -7.5)
+texture = ExtResource("2_6s7p0")
+hframes = 4
+
+[node name="state_machine" parent="." node_paths=PackedStringArray("initial_state") instance=ExtResource("3_vg8h6")]
+initial_state = NodePath("standing_state")
+
+[node name="walking_state" type="Node" parent="state_machine" node_paths=PackedStringArray("soldier", "sprite")]
+script = ExtResource("4_loccl")
+soldier = NodePath("../..")
+x_threshold = -32.0
+default_x = 288.0
+dust_particles = ExtResource("5_h540h")
+sprite = NodePath("../../Sprite2D")
+
+[node name="standing_state" type="Node" parent="state_machine" node_paths=PackedStringArray("soldier", "sprite")]
+script = ExtResource("6_tyjlu")
+release_beat = 122
+soldier = NodePath("../..")
+sprite = NodePath("../../Sprite2D")

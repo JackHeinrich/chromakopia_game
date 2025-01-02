@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://bfixjt8h7btl7"]
+
+[ext_resource type="Texture2D" uid="uid://c3i18no3vt5us" path="res://plain/plane.png" id="1_5xn5h"]
+[ext_resource type="PackedScene" uid="uid://dumn785ualf4a" path="res://state_machine/state_machine.tscn" id="2_prkwq"]
+[ext_resource type="Script" path="res://plane/states/plane.gd" id="3_086wq"]
+
+[node name="plane" type="Sprite2D"]
+modulate = Color(1, 1, 1, 0.5)
+z_index = 1
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("1_5xn5h")
+
+[node name="state_machine" parent="." node_paths=PackedStringArray("initial_state") instance=ExtResource("2_prkwq")]
+initial_state = NodePath("plane_state")
+
+[node name="plane_state" type="Node" parent="state_machine" node_paths=PackedStringArray("plane")]
+script = ExtResource("3_086wq")
+plane = NodePath("../..")

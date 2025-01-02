@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://bqsx4ynsoyjsk"]
+
+[ext_resource type="Shader" path="res://main/gradient_shift_shader.gdshader" id="1_a0r3s"]
+[ext_resource type="Texture2D" uid="uid://cihknc73yl0qi" path="res://gradients/chromakopia_palette.tres" id="2_avpu5"]
+
+[resource]
+shader = ExtResource("1_a0r3s")
+shader_parameter/speed_scale = 1.0
+shader_parameter/gradient = ExtResource("2_avpu5")

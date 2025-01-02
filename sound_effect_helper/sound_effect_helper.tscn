@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dbghobmvpem1t"]
+
+[ext_resource type="Script" path="res://sound_effect_helper/sound_effect_helper.gd" id="1_4mfvx"]
+
+[node name="SoundEffectHelper" type="Node"]
+script = ExtResource("1_4mfvx")

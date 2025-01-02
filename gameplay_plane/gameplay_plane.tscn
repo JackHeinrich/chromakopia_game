@@ -1,0 +1,132 @@
+[gd_scene load_steps=12 format=3 uid="uid://p4gl3a4bnly0"]
+
+[ext_resource type="Script" path="res://gameplay_plane/gameplay_plane.gd" id="1_mpfax"]
+[ext_resource type="Texture2D" uid="uid://croug25icaely" path="res://gameplay_plane/gameplay_plane.png" id="2_a3l4d"]
+[ext_resource type="Material" uid="uid://5btgbg3apncj" path="res://gameplay_plane/gameplay_plane_destroy_particles.tres" id="3_wkrup"]
+[ext_resource type="Texture2D" uid="uid://bil0rcp0utaoy" path="res://gameplay_plane/shadow.png" id="4_moj3p"]
+
+[sub_resource type="Animation" id="Animation_ugbic"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_72reo"]
+resource_name = "spine"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_r8plc"]
+_data = {
+"RESET": SubResource("Animation_ugbic"),
+"spine": SubResource("Animation_72reo")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ew1lt"]
+radius = 5.33333
+
+[sub_resource type="Animation" id="Animation_kgeao"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_x0qt2"]
+resource_name = "tilt"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5),
+"transitions": PackedFloat32Array(0.5, 2, 0.5, 2),
+"update": 0,
+"values": [0.0, 0.0872665, 0.0, -0.0872665]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_impnb"]
+_data = {
+"RESET": SubResource("Animation_kgeao"),
+"tilt": SubResource("Animation_x0qt2")
+}
+
+[node name="GameplayPlane" type="Node2D" node_paths=PackedStringArray("sprite", "collider", "destroy_particles", "shadow")]
+script = ExtResource("1_mpfax")
+sprite = NodePath("Sprite2D")
+collider = NodePath("collider")
+destroy_particles = NodePath("GPUParticles2D")
+shadow = NodePath("Node/shadow")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -2)
+texture = ExtResource("2_a3l4d")
+hframes = 4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
+libraries = {
+"": SubResource("AnimationLibrary_r8plc")
+}
+autoplay = "spine"
+
+[node name="collider" type="Area2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="collider"]
+shape = SubResource("CircleShape2D_ew1lt")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+scale = Vector2(0.5, 0.5)
+emitting = false
+amount = 16
+process_material = ExtResource("3_wkrup")
+one_shot = true
+explosiveness = 1.0
+visibility_rect = Rect2(-200, -200, 400, 400)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_impnb")
+}
+autoplay = "tilt"
+
+[node name="Node" type="Node" parent="."]
+
+[node name="shadow" type="Sprite2D" parent="Node"]
+modulate = Color(0, 0, 0, 0.5)
+z_index = 1
+position = Vector2(0, 96)
+texture = ExtResource("4_moj3p")

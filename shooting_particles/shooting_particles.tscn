@@ -1,0 +1,59 @@
+[gd_scene load_steps=8 format=3 uid="uid://dmxr32tfdycgi"]
+
+[ext_resource type="Script" path="res://shooting_particles/shooting_particles.gd" id="1_i0388"]
+
+[sub_resource type="Curve" id="Curve_k4sl5"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.0449102, 1), 0.0, 0.0, 0, 0, Vector2(0.799401, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_c4dir"]
+curve = SubResource("Curve_k4sl5")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_vqfl3"]
+lifetime_randomness = 0.5
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+spread = 10.0
+initial_velocity_min = 550.0
+initial_velocity_max = 600.0
+gravity = Vector3(0, 0, 0)
+scale_curve = SubResource("CurveTexture_c4dir")
+
+[sub_resource type="Curve" id="Curve_1a75l"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.0508982, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_f6iwx"]
+curve = SubResource("Curve_1a75l")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_kvxui"]
+particle_flag_disable_z = true
+angle_min = -720.0
+angle_max = 720.0
+direction = Vector3(0, -1, 0)
+initial_velocity_min = 5.0
+initial_velocity_max = 10.0
+gravity = Vector3(0, 0, 0)
+scale_max = 3.0
+scale_curve = SubResource("CurveTexture_f6iwx")
+
+[node name="shooting_particles" type="GPUParticles2D"]
+emitting = false
+amount = 4
+process_material = SubResource("ParticleProcessMaterial_vqfl3")
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 0
+trail_enabled = true
+trail_lifetime = 0.15
+trail_sections = 2
+trail_section_subdivisions = 1
+script = ExtResource("1_i0388")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+position = Vector2(0, -8)
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_kvxui")
+one_shot = true
+explosiveness = 1.0

@@ -1,0 +1,116 @@
+[gd_scene load_steps=8 format=3 uid="uid://5m84mamhoq1i"]
+
+[ext_resource type="Texture2D" uid="uid://dh5emimdb6unc" path="res://gameplay_plane/crosshair.png" id="1_h67jd"]
+[ext_resource type="Script" path="res://crosshair/crosshair.gd" id="2_e7pon"]
+[ext_resource type="AudioStream" uid="uid://bp8kmwicqlwsf" path="res://crosshair/shotgun.wav" id="3_7dy8n"]
+
+[sub_resource type="Animation" id="Animation_vtok8"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("collider:monitoring")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_vbts5"]
+resource_name = "flash"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.4),
+"transitions": PackedFloat32Array(0.5, 2, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.25, 1.25), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [0.0, 3.14159]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("collider:monitoring")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_c24nv"]
+_data = {
+"RESET": SubResource("Animation_vtok8"),
+"flash": SubResource("Animation_vbts5")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i2ime"]
+size = Vector2(24, 24)
+
+[node name="crosshair" type="Sprite2D" node_paths=PackedStringArray("animation_player", "sound_player")]
+position = Vector2(64, 0)
+texture = ExtResource("1_h67jd")
+script = ExtResource("2_e7pon")
+animation_player = NodePath("AnimationPlayer")
+sound_player = NodePath("AudioStreamPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_c24nv")
+}
+
+[node name="collider" type="Area2D" parent="."]
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="collider"]
+shape = SubResource("RectangleShape2D_i2ime")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_7dy8n")
+volume_db = -12.5

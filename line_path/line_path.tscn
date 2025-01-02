@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://djop8d6at3e6f"]
+
+[ext_resource type="Script" path="res://line_path/line_path.gd" id="1_rg2ex"]
+
+[node name="line_path" type="Path2D" node_paths=PackedStringArray("line")]
+z_index = -1
+script = ExtResource("1_rg2ex")
+line = NodePath("Line2D")
+
+[node name="Line2D" type="Line2D" parent="."]
+texture_repeat = 2
+texture_mode = 1

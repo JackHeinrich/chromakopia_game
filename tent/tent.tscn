@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dphsyy1yu04oa"]
+
+[ext_resource type="Texture2D" uid="uid://b1tfvilmu6jpa" path="res://tent/tent.png" id="1_enkxo"]
+
+[node name="tent" type="Sprite2D"]
+position = Vector2(0, -17)
+texture = ExtResource("1_enkxo")
+offset = Vector2(0.5, 0)

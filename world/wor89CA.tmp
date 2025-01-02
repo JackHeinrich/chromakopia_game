@@ -1,0 +1,863 @@
+[gd_scene load_steps=25 format=3 uid="uid://cpxbcdytd6lro"]
+
+[ext_resource type="PackedScene" uid="uid://c2p7fkfc1en7q" path="res://tyler/tyler.tscn" id="1_q3bkx"]
+[ext_resource type="PackedScene" uid="uid://dpixgoi0lujuc" path="res://world/game_camera/game_camera.tscn" id="2_q3y1q"]
+[ext_resource type="PackedScene" uid="uid://ccr1go60607ya" path="res://soldier/soldier.tscn" id="4_3uvyk"]
+[ext_resource type="PackedScene" uid="uid://baxs0wf2dfew4" path="res://gun/gun.tscn" id="4_rf8le"]
+[ext_resource type="PackedScene" uid="uid://b4t5m1ba5ug7c" path="res://soldier_line/soldier_line.tscn" id="5_1e8m5"]
+[ext_resource type="Texture2D" uid="uid://cjwlqgewdxt0y" path="res://environment/test_enviro.png" id="5_q6v5s"]
+[ext_resource type="Script" path="res://soldier_line/soldier_line_special.gd" id="6_r0noq"]
+[ext_resource type="PackedScene" uid="uid://bfixjt8h7btl7" path="res://plane/plane.tscn" id="7_uw1v8"]
+[ext_resource type="Texture2D" uid="uid://du0oi7gu1plij" path="res://barrack/barrack.png" id="8_sluny"]
+[ext_resource type="Texture2D" uid="uid://dftp36mc45gto" path="res://tire_tracks/tire_tracks.png" id="9_5e0d1"]
+[ext_resource type="PackedScene" uid="uid://djop8d6at3e6f" path="res://line_path/line_path.tscn" id="9_wma1q"]
+[ext_resource type="PackedScene" uid="uid://ojovg2110m3r" path="res://plane_manager/plane_manager.tscn" id="11_118ty"]
+[ext_resource type="PackedScene" uid="uid://dwmhr8hhgbtnd" path="res://screamer/screamer.tscn" id="12_05nsv"]
+[ext_resource type="Script" path="res://plane_manager/states/plane_manager_state.gd" id="12_cjepm"]
+[ext_resource type="PackedScene" uid="uid://c05ts2gavmt53" path="res://sandbad/sandbag.tscn" id="13_h8dd7"]
+[ext_resource type="PackedScene" uid="uid://ru62i473ssbo" path="res://tank/tank.tscn" id="13_skw82"]
+[ext_resource type="PackedScene" uid="uid://mynlm5p6xvi6" path="res://bombshel/bombshell.tscn" id="14_qkmec"]
+[ext_resource type="Script" path="res://plane_manager/plane_manager_state_2.gd" id="16_74fdt"]
+[ext_resource type="PackedScene" uid="uid://dphsyy1yu04oa" path="res://tent/tent.tscn" id="17_5505o"]
+[ext_resource type="Texture2D" uid="uid://b1qwabscdvqhn" path="res://container/container.png" id="19_ccxdb"]
+[ext_resource type="PackedScene" uid="uid://dumn785ualf4a" path="res://state_machine/state_machine.tscn" id="21_81ex1"]
+[ext_resource type="Script" path="res://world/default_state.gd" id="22_6sr4c"]
+
+[sub_resource type="Curve2D" id="Curve2D_0dyxg"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -43, -174, -15.338, 0, 15.338, 0, 117, -174, 0.0257445, -6.34114, -0.0257445, 6.34114, 133, -190, 0, 0, 0, 0, 133, -262)
+}
+point_count = 4
+
+[sub_resource type="Curve2D" id="Curve2D_atipr"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -11, -195, -17.3529, 0, 17.3529, 0, 133, -195, -0.33371, -11.0124, 0.33371, 11.0124, 149, -211, 0, 0, 0, 0, 149, -259)
+}
+point_count = 4
+
+[node name="world" type="Node2D"]
+y_sort_enabled = true
+metadata/_edit_lock_ = true
+
+[node name="tyler" parent="." instance=ExtResource("1_q3bkx")]
+position = Vector2(128, 152)
+
+[node name="first_walking_state" parent="tyler/state_machine" index="1"]
+target_pos = Vector2(128, -120)
+
+[node name="gunning_state" parent="tyler/state_machine" index="3" node_paths=PackedStringArray("plane_manager")]
+plane_manager = NodePath("../../../plane_manager")
+
+[node name="second_walking_state" parent="tyler/state_machine" index="5"]
+first_location = Vector2(168, -120)
+
+[node name="third_walking_state" parent="tyler/state_machine" index="6"]
+target_pos = Vector2(168, -152)
+
+[node name="fourth_walking_state" parent="tyler/state_machine" index="7"]
+target_pos = Vector2(104, -152)
+
+[node name="fifth_walking_state" parent="tyler/state_machine" index="8"]
+target_pos = Vector2(104, -256)
+
+[node name="walking_state_six" parent="tyler/state_machine" index="10"]
+walk_to_1 = Vector2(104, -608)
+walk_to_2 = Vector2(128, -608)
+walk_to_3 = Vector2(128, -664)
+
+[node name="final_state" parent="tyler/state_machine" index="11" node_paths=PackedStringArray("camera")]
+camera = NodePath("../../../Camera2D")
+camera_y_pos = -768
+
+[node name="Camera2D" parent="." node_paths=PackedStringArray("follow_target") instance=ExtResource("2_q3y1q")]
+offset = Vector2(0, -8.36375e-05)
+limit_left = 0
+limit_right = 256
+follow_target = NodePath("../tyler")
+random_strength = 3.0
+shake_fade = 7.5
+
+[node name="camera_state" parent="Camera2D/state_machine" index="0" node_paths=PackedStringArray("player")]
+static_beat1 = 46
+return_beat1 = 60
+static_beat2 = 142
+return_beat2 = 180
+static_pos1 = Vector2(128, -224)
+static_pos2 = Vector2(128, -592)
+player = NodePath("../../../tyler")
+
+[node name="TestEnviro" type="Sprite2D" parent="."]
+z_index = -2
+position = Vector2(128, 136)
+texture = ExtResource("5_q6v5s")
+offset = Vector2(0, -480)
+
+[node name="soldierlines" type="Node2D" parent="."]
+
+[node name="SoldierLine" parent="soldierlines" instance=ExtResource("5_1e8m5")]
+position = Vector2(8, -27)
+x_threshold = -32.0
+default_x = 288.0
+
+[node name="Soldier" parent="soldierlines/SoldierLine" instance=ExtResource("4_3uvyk")]
+position = Vector2(120, 239)
+
+[node name="Soldier2" parent="soldierlines/SoldierLine" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(104, 239)
+walking_state = NodePath("../Soldier/state_machine/walking_state")
+
+[node name="Soldier3" parent="soldierlines/SoldierLine" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(88, 239)
+walking_state = NodePath("../Soldier/state_machine/walking_state")
+
+[node name="Soldier4" parent="soldierlines/SoldierLine" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(72, 239)
+walking_state = NodePath("../Soldier/state_machine/walking_state")
+
+[node name="Soldier5" parent="soldierlines/SoldierLine" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(56, 239)
+walking_state = NodePath("../Soldier/state_machine/walking_state")
+
+[node name="Soldier6" parent="soldierlines/SoldierLine" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(40, 239)
+walking_state = NodePath("../Soldier/state_machine/walking_state")
+
+[node name="Soldier7" parent="soldierlines/SoldierLine" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(24, 239)
+walking_state = NodePath("../Soldier/state_machine/walking_state")
+
+[node name="Soldier8" parent="soldierlines/SoldierLine" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(8, 239)
+walking_state = NodePath("../Soldier/state_machine/walking_state")
+
+[node name="Soldier9" parent="soldierlines/SoldierLine" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(-8, 239)
+walking_state = NodePath("../Soldier/state_machine/walking_state")
+
+[node name="Soldier10" parent="soldierlines/SoldierLine" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(264, 239)
+walking_state = NodePath("../Soldier/state_machine/walking_state")
+
+[node name="Soldier11" parent="soldierlines/SoldierLine" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(248, 239)
+walking_state = NodePath("../Soldier/state_machine/walking_state")
+
+[node name="Soldier12" parent="soldierlines/SoldierLine" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(232, 239)
+walking_state = NodePath("../Soldier/state_machine/walking_state")
+
+[node name="Soldier13" parent="soldierlines/SoldierLine" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(216, 239)
+walking_state = NodePath("../Soldier/state_machine/walking_state")
+
+[node name="Soldier14" parent="soldierlines/SoldierLine" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(200, 239)
+walking_state = NodePath("../Soldier/state_machine/walking_state")
+
+[node name="Soldier15" parent="soldierlines/SoldierLine" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(184, 239)
+walking_state = NodePath("../Soldier/state_machine/walking_state")
+
+[node name="Soldier16" parent="soldierlines/SoldierLine" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(168, 239)
+walking_state = NodePath("../Soldier/state_machine/walking_state")
+
+[node name="Soldier17" parent="soldierlines/SoldierLine" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(152, 239)
+walking_state = NodePath("../Soldier/state_machine/walking_state")
+
+[node name="Soldier18" parent="soldierlines/SoldierLine" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(136, 239)
+walking_state = NodePath("../Soldier/state_machine/walking_state")
+
+[node name="Soldier19" parent="soldierlines/SoldierLine" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(408, 239)
+walking_state = NodePath("../Soldier/state_machine/walking_state")
+
+[node name="Soldier20" parent="soldierlines/SoldierLine" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(392, 239)
+walking_state = NodePath("../Soldier/state_machine/walking_state")
+
+[node name="Soldier21" parent="soldierlines/SoldierLine" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(376, 239)
+walking_state = NodePath("../Soldier/state_machine/walking_state")
+
+[node name="Soldier22" parent="soldierlines/SoldierLine" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(360, 239)
+walking_state = NodePath("../Soldier/state_machine/walking_state")
+
+[node name="Soldier23" parent="soldierlines/SoldierLine" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(344, 239)
+walking_state = NodePath("../Soldier/state_machine/walking_state")
+
+[node name="Soldier24" parent="soldierlines/SoldierLine" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(328, 239)
+walking_state = NodePath("../Soldier/state_machine/walking_state")
+
+[node name="Soldier25" parent="soldierlines/SoldierLine" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(312, 239)
+walking_state = NodePath("../Soldier/state_machine/walking_state")
+
+[node name="Soldier26" parent="soldierlines/SoldierLine" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(296, 239)
+walking_state = NodePath("../Soldier/state_machine/walking_state")
+
+[node name="Soldier27" parent="soldierlines/SoldierLine" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(280, 239)
+walking_state = NodePath("../Soldier/state_machine/walking_state")
+
+[node name="SoldierLine5" parent="soldierlines" instance=ExtResource("5_1e8m5")]
+z_index = -1
+position = Vector2(-328, -1011)
+script = ExtResource("6_r0noq")
+direction = 1
+default_x = 110.0
+
+[node name="Soldier" parent="soldierlines/SoldierLine5" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(120, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier2" parent="soldierlines/SoldierLine5" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(104, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier3" parent="soldierlines/SoldierLine5" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(88, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier4" parent="soldierlines/SoldierLine5" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(72, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier5" parent="soldierlines/SoldierLine5" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(56, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier6" parent="soldierlines/SoldierLine5" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(40, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier7" parent="soldierlines/SoldierLine5" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(24, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier8" parent="soldierlines/SoldierLine5" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(8, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier9" parent="soldierlines/SoldierLine5" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(-8, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier10" parent="soldierlines/SoldierLine5" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(264, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier11" parent="soldierlines/SoldierLine5" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(248, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier12" parent="soldierlines/SoldierLine5" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(232, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier13" parent="soldierlines/SoldierLine5" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(216, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier14" parent="soldierlines/SoldierLine5" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(200, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier15" parent="soldierlines/SoldierLine5" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(184, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier16" parent="soldierlines/SoldierLine5" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(168, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier17" parent="soldierlines/SoldierLine5" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(152, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier18" parent="soldierlines/SoldierLine5" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(136, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier19" parent="soldierlines/SoldierLine5" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(408, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier20" parent="soldierlines/SoldierLine5" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(392, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier21" parent="soldierlines/SoldierLine5" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(376, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier22" parent="soldierlines/SoldierLine5" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(360, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier23" parent="soldierlines/SoldierLine5" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(344, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier24" parent="soldierlines/SoldierLine5" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(328, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier25" parent="soldierlines/SoldierLine5" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(312, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier26" parent="soldierlines/SoldierLine5" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(296, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier27" parent="soldierlines/SoldierLine5" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(280, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="SoldierLine2" parent="soldierlines" instance=ExtResource("5_1e8m5")]
+position = Vector2(8, -7)
+x_threshold = -32.0
+default_x = 288.0
+
+[node name="Soldier" parent="soldierlines/SoldierLine2" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(120, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier2" parent="soldierlines/SoldierLine2" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(104, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier3" parent="soldierlines/SoldierLine2" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(88, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier4" parent="soldierlines/SoldierLine2" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(72, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier5" parent="soldierlines/SoldierLine2" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(56, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier6" parent="soldierlines/SoldierLine2" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(40, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier7" parent="soldierlines/SoldierLine2" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(24, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier8" parent="soldierlines/SoldierLine2" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(8, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier9" parent="soldierlines/SoldierLine2" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(-8, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier10" parent="soldierlines/SoldierLine2" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(264, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier11" parent="soldierlines/SoldierLine2" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(248, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier12" parent="soldierlines/SoldierLine2" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(232, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier13" parent="soldierlines/SoldierLine2" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(216, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier14" parent="soldierlines/SoldierLine2" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(200, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier15" parent="soldierlines/SoldierLine2" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(184, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier16" parent="soldierlines/SoldierLine2" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(168, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier17" parent="soldierlines/SoldierLine2" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(152, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier18" parent="soldierlines/SoldierLine2" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(136, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier19" parent="soldierlines/SoldierLine2" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(408, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier20" parent="soldierlines/SoldierLine2" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(392, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier21" parent="soldierlines/SoldierLine2" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(376, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier22" parent="soldierlines/SoldierLine2" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(360, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier23" parent="soldierlines/SoldierLine2" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(344, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier24" parent="soldierlines/SoldierLine2" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(328, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier25" parent="soldierlines/SoldierLine2" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(312, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier26" parent="soldierlines/SoldierLine2" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(296, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier27" parent="soldierlines/SoldierLine2" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(280, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="SoldierLine3" parent="soldierlines" instance=ExtResource("5_1e8m5")]
+position = Vector2(8, 15)
+x_threshold = -32.0
+default_x = 288.0
+
+[node name="Soldier" parent="soldierlines/SoldierLine3" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(120, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier2" parent="soldierlines/SoldierLine3" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(104, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier3" parent="soldierlines/SoldierLine3" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(88, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier4" parent="soldierlines/SoldierLine3" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(72, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier5" parent="soldierlines/SoldierLine3" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(56, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier6" parent="soldierlines/SoldierLine3" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(40, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier7" parent="soldierlines/SoldierLine3" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(24, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier8" parent="soldierlines/SoldierLine3" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(8, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier9" parent="soldierlines/SoldierLine3" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(-8, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier10" parent="soldierlines/SoldierLine3" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(264, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier11" parent="soldierlines/SoldierLine3" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(248, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier12" parent="soldierlines/SoldierLine3" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(232, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier13" parent="soldierlines/SoldierLine3" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(216, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier14" parent="soldierlines/SoldierLine3" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(200, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier15" parent="soldierlines/SoldierLine3" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(184, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier16" parent="soldierlines/SoldierLine3" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(168, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier17" parent="soldierlines/SoldierLine3" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(152, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier18" parent="soldierlines/SoldierLine3" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(136, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier19" parent="soldierlines/SoldierLine3" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(408, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier20" parent="soldierlines/SoldierLine3" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(392, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier21" parent="soldierlines/SoldierLine3" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(376, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier22" parent="soldierlines/SoldierLine3" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(360, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier23" parent="soldierlines/SoldierLine3" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(344, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier24" parent="soldierlines/SoldierLine3" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(328, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier25" parent="soldierlines/SoldierLine3" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(312, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier26" parent="soldierlines/SoldierLine3" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(296, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier27" parent="soldierlines/SoldierLine3" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(280, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="SoldierLine4" parent="soldierlines" instance=ExtResource("5_1e8m5")]
+position = Vector2(8, 35)
+x_threshold = -32.0
+default_x = 288.0
+
+[node name="Soldier" parent="soldierlines/SoldierLine4" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(120, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier2" parent="soldierlines/SoldierLine4" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(104, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier3" parent="soldierlines/SoldierLine4" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(88, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier4" parent="soldierlines/SoldierLine4" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(72, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier5" parent="soldierlines/SoldierLine4" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(56, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier6" parent="soldierlines/SoldierLine4" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(40, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier7" parent="soldierlines/SoldierLine4" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(24, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier8" parent="soldierlines/SoldierLine4" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(8, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier9" parent="soldierlines/SoldierLine4" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(-8, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier10" parent="soldierlines/SoldierLine4" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(264, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier11" parent="soldierlines/SoldierLine4" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(248, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier12" parent="soldierlines/SoldierLine4" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(232, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier13" parent="soldierlines/SoldierLine4" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(216, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier14" parent="soldierlines/SoldierLine4" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(200, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier15" parent="soldierlines/SoldierLine4" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(184, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier16" parent="soldierlines/SoldierLine4" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(168, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier17" parent="soldierlines/SoldierLine4" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(152, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier18" parent="soldierlines/SoldierLine4" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(136, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier19" parent="soldierlines/SoldierLine4" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(408, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier20" parent="soldierlines/SoldierLine4" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(392, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier21" parent="soldierlines/SoldierLine4" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(376, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier22" parent="soldierlines/SoldierLine4" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(360, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier23" parent="soldierlines/SoldierLine4" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(344, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier24" parent="soldierlines/SoldierLine4" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(328, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier25" parent="soldierlines/SoldierLine4" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(312, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier26" parent="soldierlines/SoldierLine4" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(296, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="Soldier27" parent="soldierlines/SoldierLine4" node_paths=PackedStringArray("walking_state") instance=ExtResource("4_3uvyk")]
+position = Vector2(280, 239)
+walking_state = NodePath("../../SoldierLine/Soldier/state_machine/walking_state")
+
+[node name="deco_objects" type="Node2D" parent="."]
+
+[node name="gun" parent="deco_objects" instance=ExtResource("4_rf8le")]
+position = Vector2(140, -128)
+rotation = -0.785398
+scale = Vector2(0.75, 0.75)
+
+[node name="plane" parent="deco_objects" instance=ExtResource("7_uw1v8")]
+modulate = Color(1, 1, 1, 0.25)
+position = Vector2(-328, 96)
+rotation = 1.37357
+scale = Vector2(1.5, 1.5)
+
+[node name="plane_state" parent="deco_objects/plane/state_machine" index="0"]
+release_beat = 30
+beats_to_target = 4
+target = Vector2(1024, -128)
+
+[node name="plane2" parent="deco_objects" instance=ExtResource("7_uw1v8")]
+modulate = Color(1, 1, 1, 0.25)
+position = Vector2(480, 0)
+rotation = -1.43292
+scale = Vector2(1, 1)
+
+[node name="plane_state" parent="deco_objects/plane2/state_machine" index="0"]
+release_beat = 42
+beats_to_target = 2
+target = Vector2(-256, -104)
+
+[node name="line_path" parent="deco_objects" instance=ExtResource("9_wma1q")]
+position = Vector2(9, 2)
+curve = SubResource("Curve2D_0dyxg")
+
+[node name="Line2D" parent="deco_objects/line_path" index="0"]
+texture = ExtResource("9_5e0d1")
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="line_path2" parent="deco_objects" instance=ExtResource("9_wma1q")]
+position = Vector2(-33, -1)
+curve = SubResource("Curve2D_atipr")
+
+[node name="Line2D" parent="deco_objects/line_path2" index="0"]
+texture = ExtResource("9_5e0d1")
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="barracks" type="Node2D" parent="deco_objects"]
+y_sort_enabled = true
+
+[node name="barrack" type="Sprite2D" parent="deco_objects/barracks"]
+position = Vector2(30.5, 0)
+texture = ExtResource("8_sluny")
+
+[node name="barrack7" type="Sprite2D" parent="deco_objects/barracks"]
+position = Vector2(30.5, -81)
+texture = ExtResource("8_sluny")
+
+[node name="barrack9" type="Sprite2D" parent="deco_objects/barracks"]
+position = Vector2(20.5, -55)
+texture = ExtResource("8_sluny")
+
+[node name="barrack10" type="Sprite2D" parent="deco_objects/barracks"]
+position = Vector2(23.5, -30)
+texture = ExtResource("8_sluny")
+
+[node name="barrack4" type="Sprite2D" parent="deco_objects/barracks"]
+position = Vector2(240.5, 0)
+rotation = 3.14159
+scale = Vector2(1, -1)
+texture = ExtResource("8_sluny")
+
+[node name="barrack6" type="Sprite2D" parent="deco_objects/barracks"]
+position = Vector2(234.5, -48)
+rotation = 3.14159
+scale = Vector2(1, -1)
+texture = ExtResource("8_sluny")
+
+[node name="barrack8" type="Sprite2D" parent="deco_objects/barracks"]
+position = Vector2(248.5, -24)
+rotation = 3.14159
+scale = Vector2(1, -1)
+texture = ExtResource("8_sluny")
+
+[node name="tents" type="Node2D" parent="deco_objects"]
+y_sort_enabled = true
+
+[node name="tent" parent="deco_objects/tents" instance=ExtResource("17_5505o")]
+position = Vector2(10, -289)
+
+[node name="tent4" parent="deco_objects/tents" instance=ExtResource("17_5505o")]
+position = Vector2(251, -321)
+rotation = 3.14159
+scale = Vector2(1, -1)
+
+[node name="tent5" parent="deco_objects/tents" instance=ExtResource("17_5505o")]
+position = Vector2(240, -398)
+rotation = 3.14159
+scale = Vector2(1, -1)
+
+[node name="bombshell" parent="deco_objects" instance=ExtResource("14_qkmec")]
+position = Vector2(32, -392)
+
+[node name="CPUParticles2D" parent="deco_objects/bombshell" index="0"]
+emitting = false
+
+[node name="bombshell3" parent="deco_objects" instance=ExtResource("14_qkmec")]
+position = Vector2(256, -528)
+
+[node name="CPUParticles2D" parent="deco_objects/bombshell3" index="0"]
+emitting = false
+
+[node name="sandbag" parent="deco_objects" instance=ExtResource("13_h8dd7")]
+position = Vector2(2, -325)
+
+[node name="sandbag4" parent="deco_objects" instance=ExtResource("13_h8dd7")]
+position = Vector2(30, -429)
+scale = Vector2(-1, 1)
+
+[node name="sandbag5" parent="deco_objects" instance=ExtResource("13_h8dd7")]
+position = Vector2(226, -481)
+
+[node name="sandbag2" parent="deco_objects" instance=ExtResource("13_h8dd7")]
+position = Vector2(258, -357)
+
+[node name="sandbag3" parent="deco_objects" instance=ExtResource("13_h8dd7")]
+position = Vector2(266, -374)
+scale = Vector2(-1, 1)
+
+[node name="bombshell2" parent="deco_objects" instance=ExtResource("14_qkmec")]
+position = Vector2(216, -448)
+
+[node name="plane_manager" parent="." node_paths=PackedStringArray("scene_camera") instance=ExtResource("11_118ty")]
+z_index = 1
+position = Vector2(0, -256)
+scene_camera = NodePath("../Camera2D")
+
+[node name="state_machine" parent="plane_manager" index="0" node_paths=PackedStringArray("initial_state")]
+initial_state = NodePath("plane_manager_state")
+
+[node name="plane_manager_state" type="Node" parent="plane_manager/state_machine" index="0" node_paths=PackedStringArray("plane_manager")]
+script = ExtResource("12_cjepm")
+plane_manager = NodePath("../..")
+
+[node name="screamer" parent="." instance=ExtResource("12_05nsv")]
+position = Vector2(272, -184)
+
+[node name="screamer_state" parent="screamer/state_machine" index="0"]
+target_pos = Vector2(-16, -184)
+
+[node name="tank" parent="." instance=ExtResource("13_skw82")]
+position = Vector2(128, -276)
+
+[node name="initial_tank_state" parent="tank/state_machine" index="0" node_paths=PackedStringArray("tyler")]
+tyler = NodePath("../../../tyler")
+tween_pos = Vector2(128, -512)
+
+[node name="firing_state" parent="tank/state_machine" index="2" node_paths=PackedStringArray("plane_manager")]
+plane_manager = NodePath("../../../plane_manager2")
+
+[node name="plane_manager2" parent="." node_paths=PackedStringArray("scene_camera") instance=ExtResource("11_118ty")]
+position = Vector2(0, -624)
+scene_camera = NodePath("../Camera2D")
+tank_mode = true
+
+[node name="state_machine" parent="plane_manager2" index="0" node_paths=PackedStringArray("initial_state")]
+initial_state = NodePath("plane_manager_state_2")
+
+[node name="plane_manager_state_2" type="Node" parent="plane_manager2/state_machine" index="0" node_paths=PackedStringArray("plane_manager")]
+script = ExtResource("16_74fdt")
+plane_manager = NodePath("../..")
+
+[node name="Container" type="Sprite2D" parent="."]
+position = Vector2(128, -784)
+texture = ExtResource("19_ccxdb")
+offset = Vector2(0.5, 0)
+
+[node name="soldier_line_state_machine" parent="." node_paths=PackedStringArray("initial_state") instance=ExtResource("21_81ex1")]
+initial_state = NodePath("default_state")
+
+[node name="default_state" type="Node" parent="soldier_line_state_machine"]
+script = ExtResource("22_6sr4c")
+
+[connection signal="activate" from="soldier_line_state_machine/default_state" to="soldierlines/SoldierLine5" method="_on_default_state_activate"]
+
+[editable path="tyler"]
+[editable path="Camera2D"]
+[editable path="deco_objects/plane"]
+[editable path="deco_objects/plane2"]
+[editable path="deco_objects/line_path"]
+[editable path="deco_objects/line_path2"]
+[editable path="deco_objects/bombshell"]
+[editable path="deco_objects/bombshell3"]
+[editable path="plane_manager"]
+[editable path="plane_manager/crosshairs/crosshair"]
+[editable path="plane_manager/crosshairs/crosshair2"]
+[editable path="screamer"]
+[editable path="tank"]
+[editable path="plane_manager2"]
+[editable path="plane_manager2/crosshairs/crosshair"]
+[editable path="plane_manager2/crosshairs/crosshair2"]

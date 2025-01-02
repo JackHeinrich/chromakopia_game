@@ -1,0 +1,36 @@
+[gd_scene load_steps=7 format=3 uid="uid://bb5jvopj0xq1j"]
+
+[ext_resource type="Script" path="res://main/main.gd" id="1_7i20w"]
+[ext_resource type="PackedScene" uid="uid://cpxbcdytd6lro" path="res://world/world.tscn" id="1_gytec"]
+[ext_resource type="Shader" path="res://main/gradient_shift_shader.gdshader" id="1_q6i6g"]
+[ext_resource type="Texture2D" uid="uid://cihknc73yl0qi" path="res://gradients/chromakopia_palette.tres" id="3_g05n8"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mh0tp"]
+shader = ExtResource("1_q6i6g")
+shader_parameter/speed_scale = 1.0
+shader_parameter/gradient = ExtResource("3_g05n8")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_hbdej"]
+viewport_path = NodePath("game_viewport")
+
+[node name="main" type="Node2D"]
+script = ExtResource("1_7i20w")
+
+[node name="main_camera" type="Camera2D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="game_display" type="Sprite2D" parent="."]
+texture_filter = 1
+material = SubResource("ShaderMaterial_mh0tp")
+texture = SubResource("ViewportTexture_hbdej")
+region_enabled = true
+region_rect = Rect2(0, 0, 256, 240)
+metadata/_edit_lock_ = true
+
+[node name="game_viewport" type="SubViewport" parent="."]
+transparent_bg = true
+handle_input_locally = false
+audio_listener_enable_2d = true
+size = Vector2i(256, 240)
+
+[node name="world" parent="game_viewport" instance=ExtResource("1_gytec")]

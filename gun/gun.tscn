@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3 uid="uid://baxs0wf2dfew4"]
+
+[ext_resource type="Texture2D" uid="uid://dmfx8c7avjbbw" path="res://gun/gun.png" id="1_merrt"]
+[ext_resource type="PackedScene" uid="uid://dumn785ualf4a" path="res://state_machine/state_machine.tscn" id="2_tt2os"]
+[ext_resource type="AudioStream" uid="uid://c6j1303r2ga5k" path="res://gun/cock1.wav" id="2_u1nk4"]
+[ext_resource type="AudioStream" uid="uid://dx3ef0rt2w6ng" path="res://gun/cock2.wav" id="3_6b604"]
+[ext_resource type="Script" path="res://gun/states/gun_state.gd" id="3_8id87"]
+[ext_resource type="AudioStream" uid="uid://db57batxdmn61" path="res://gun/swipe.wav" id="4_bmro6"]
+
+[node name="gun" type="Sprite2D"]
+z_index = -1
+texture = ExtResource("1_merrt")
+
+[node name="click1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_u1nk4")
+volume_db = -10.0
+
+[node name="click2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_6b604")
+volume_db = -10.0
+
+[node name="swipe" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_bmro6")
+pitch_scale = 0.72
+
+[node name="state_machine" parent="." node_paths=PackedStringArray("initial_state") instance=ExtResource("2_tt2os")]
+initial_state = NodePath("gun_state")
+
+[node name="gun_state" type="Node" parent="state_machine" node_paths=PackedStringArray("sprite", "sound_player1", "sound_player2", "swipe_sound_player")]
+script = ExtResource("3_8id87")
+sprite = NodePath("../..")
+release_beat = 47
+click_1_beat = 48
+click_2_beat = 49
+sound_player1 = NodePath("../../click1")
+sound_player2 = NodePath("../../click2")
+swipe_sound_player = NodePath("../../swipe")
